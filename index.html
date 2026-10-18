@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERDARK</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#080811;
+  color:white;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:25px 16px;
+}
+h1{
+  color:#00f5ff;
+  letter-spacing:5px;
+  text-shadow:0 0 18px #00f5ff;
+  margin-top:35px;
+}
+p{color:#bdbdd0}
+.card{
+  max-width:430px;
+  margin:25px auto;
+  padding:24px;
+  background:#141423;
+  border:1px solid #663cff;
+  border-radius:18px;
+  box-shadow:0 0 22px #663cff33;
+}
+button,input{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border-radius:9px;
+  font-size:16px;
+}
+input{
+  background:#080811;
+  border:1px solid #44445d;
+  color:white;
+}
+button{
+  background:#00e5ff;
+  color:#080811;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+}
+.secondary{
+  background:#a855f7;
+  color:white;
+}
+#game{display:none}
+#question{font-size:21px;min-height:70px}
+</style>
+</head>
+<body>
+
+<h1>AFTERDARK</h1>
+<p>One link. Your friends. Unlimited fun.</p>
+
+<div class="card" id="home">
+  <h2>Enter the Night</h2>
+  <input id="player" placeholder="Your nickname">
+  <button onclick="startGame()">CREATE GAME</button>
+  <p>Make your own room and play!</p>
+</div>
+
+<div class="card" id="game">
+  <p id="welcome"></p>
+  <h2 id="category">TRUTH OR DARE</h2>
+  <div id="question">Ready to play?</div>
+  <button onclick="nextQuestion()">NEXT QUESTION</button>
+  <button class="secondary" onclick="showCategory()">CHANGE GAME</button>
+  <button onclick="shareGame()">INVITE FRIENDS</button>
+  <p id="status"></p>
+</div>
+
+<script>
+const questions = {
+  "TRUTH OR DARE": [
+    "What is your funniest memory?",
+    "Who makes you laugh the most?",
+    "Do your best funny impression!",
+    "Tell us one unusual fact about yourself.",
+    "Give someone a genuine compliment!"
+  ],
+  "GUESSING GAME": [
+    "I have keys but no locks. What am I? (A piano)",
+    "What has hands but cannot clap? (A clock)",
+    "What gets wetter as it dries? (A towel)",
+    "What has a face and two hands? (A clock)",
+    "What has many teeth but cannot bite? (A comb)"
+  ]
+};
+
+let current = "TRUTH OR DARE";
+
+function startGame(){
+  const name = document.getElementById("player").value.trim();
+  if(!name){
+    alert("Please enter your nickname!");
+    return;
+  }
+  document.getElementById("home").style.display="none";
+  document.getElementById("game").style.display="block";
+  document.getElementById("welcome").textContent="Player: "+name;
+  nextQuestion();
+}
+
+function nextQuestion(){
+  const list = questions[current];
+  document.getElementById("question").textContent=
+    list[Math.floor(Math.random()*list.length)];
+}
+
+function showCategory(){
+  current = current==="TRUTH OR DARE" ?
+    "GUESSING GAME" : "TRUTH OR DARE";
+  document.getElementById("category").textContent=current;
+  nextQuestion();
+}
+
+function shareGame(){
+  if(navigator.share){
+    navigator.share({
+      title:"AFTERDARK",
+      text:"Let's play AFTERDARK!",
+      url:location.href
+    });
+  }else{
+    alert("Copy your website link from the browser and send it to your friends!");
+  }
+}
+</script>
+</body>
+</html>
